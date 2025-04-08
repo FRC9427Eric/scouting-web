@@ -1,0 +1,23 @@
+# Node
+node_modules/
+build/
+dist/
+.env
+*.log
+*.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.egg-info/
+
+# Executables
+*.exe
+*.zip
+*.tar.gz
+*.jar
+
+# IDE / System
+.DS_Store
+.vscode/
