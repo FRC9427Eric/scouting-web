@@ -1,0 +1,226 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 36px;
+  margin: 20px 0;
+  color: #FFD700;
+  text-align: center;
+}
+
+h2, h3 {
+  font-size: 24px;
+  margin: 20px 0;
+  color: #FFD700;
+  text-align: center;
+}
+
+input, select, textarea {
+  padding: 5px;
+  margin: 10px;
+  font-size: 16px;
+  border: 1px solid #FFD700;
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.input-group {
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section {
+  border: 1px solid #FFD700;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  background-color: #2a2a2a;
+}
+
+.section h3 {
+  margin-top: 0;
+  text-align: center;
+  color: #FFD700;
+}
+
+.score-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .score-group {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+textarea {
+  width: 100%;
+  max-width: 100%;
+  height: 100px;
+  padding: 8px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+  display: block;
+}
+
+.scaled-image {
+  max-width: 150px;
+  height: auto;
+  margin: 10px auto;
+}
+
+.full-width-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #333;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-content p {
+  margin: 0 0 15px;
+  color: #FFD700;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}
+
+/* 明確區分按鈕與輸入框 */
+.counter-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: #222;
+  border: 1px solid #FFD700;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.counter-input input {
+  width: 60px;
+  text-align: center;
+  background-color: #444;
+  border: none;
+  color: #fff;
+}
+
+.counter-input button {
+  background-color: #555;
+  border: 1px solid #FFD700;
+  color: #FFD700;
+  font-size: 18px;
+  padding: 4px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.counter-input button:hover {
+  background-color: #666;
+}
+
+.input-group.compact {
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cage-level-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
