@@ -21,3 +21,36 @@ __pycache__/
 # IDE / System
 .DS_Store
 .vscode/
+
+# VSCode
+.vscode/
+
+# Build
+build/
+dist/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Installer
+*.exe
+*.msi
+
+# Local settings
+.env
+
+# 忽略 Python 後端與秘密檔案
+backend/service_account.json
+*.pyc
+__pycache__/
+venv/
+*.exe
+*.jar
+*.msi
+
+# 忽略 node 與 React 編譯相關
+node_modules/
+build/
+dist/
+.env
