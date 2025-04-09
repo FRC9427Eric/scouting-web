@@ -37,11 +37,10 @@ security = HTTPBasic()
 def verify_user(credentials: HTTPBasicCredentials = Depends(security)):
     username = credentials.username.strip()
     password = credentials.password.strip()
-    correct_password = USERS.get(username)
+    correct_password = str(USERS.get(username))  # ⬅ 強制轉為 str，避免 int 比對錯誤
 
     if not correct_password or not secrets.compare_digest(password, correct_password):
         raise HTTPException(status_code=401, detail="Unauthorized")
-
     return username
 
 
