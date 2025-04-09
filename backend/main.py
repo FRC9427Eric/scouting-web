@@ -25,10 +25,10 @@ app.add_middleware(
 
 # ✅ 使用者帳號密碼清單（可自行修改）
 USERS = {
-    "FRC9427": 942794272023,
+    "FRC9427": "942794272023",
     "Eric": "20080706",
     "Jarod": "20080610",
-    "visitor":94272023
+    "visitor":"94272023"
 }
 
 security = HTTPBasic()

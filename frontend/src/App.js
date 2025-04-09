@@ -197,7 +197,7 @@ function App() {
           </div>
 
           <div className="section">
-            <h3>Processor</h3>
+            <h3>Processor/Net</h3>
             <div className="score-group">
               {renderCounter("Processor:", "processor")}
               {renderCounter("Net:", "net")}
