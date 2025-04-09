@@ -35,10 +35,15 @@ security = HTTPBasic()
 
 # ✅ 驗證帳號密碼函式
 def verify_user(credentials: HTTPBasicCredentials = Depends(security)):
-    correct_password = USERS.get(credentials.username)
-    if not correct_password or not secrets.compare_digest(credentials.password, correct_password):
+    username = credentials.username.strip()
+    password = credentials.password.strip()
+    correct_password = USERS.get(username)
+
+    if not correct_password or not secrets.compare_digest(password, correct_password):
         raise HTTPException(status_code=401, detail="Unauthorized")
-    return credentials.username
+
+    return username
+
 
 # 更新後的資料模型
 class ScoutingData(BaseModel):
