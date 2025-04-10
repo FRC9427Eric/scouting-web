@@ -5,7 +5,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel, ValidationError, field_validator
 import gspread
 from google.oauth2.service_account import Credentials
-import threading
+import os
 import logging
 import secrets
 
@@ -17,23 +17,23 @@ app = FastAPI()
 # CORS 設定：允許所有來源
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允許所有來源，生產環境應限制為前端域名
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ 使用者帳號密碼清單（可自行修改）
+# ✅ 使用者帳號密碼清單
 USERS = {
     "FRC9427": "942794272023",
     "Eric": "20080706",
     "Jarod": "20080610",
-    "visitor":"94272023"
+    "visitor": "94272023"
 }
 
 security = HTTPBasic()
 
-# ✅ 驗證帳號密碼函式
+# ✅ 驗證帳號密碼
 def verify_user(credentials: HTTPBasicCredentials = Depends(security)):
     username = credentials.username.strip()
     password = credentials.password.strip()
@@ -43,8 +43,7 @@ def verify_user(credentials: HTTPBasicCredentials = Depends(security)):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return username
 
-
-# 更新後的資料模型
+# ✅ 資料模型
 class ScoutingData(BaseModel):
     match: int = 0
     team_number: int = 0
@@ -74,33 +73,25 @@ class ScoutingData(BaseModel):
             return int(v)
         return v
 
-# 寫入 Google Sheets
-def append_to_sheets(data):
-    row = [
-        data.match,
-        data.team_number, data.auto_L1, data.auto_L2, data.auto_L3, data.auto_L4,
-        data.teleop_L1, data.teleop_L2, data.teleop_L3, data.teleop_L4,
-        data.cage_level, data.processor, data.net, data.fouls,
-        data.major_fouls, data.notes
-    ]
-    logging.info(f"Appending row: {row}")
-    sheet.append_row(row)
-    logging.info("Data written successfully to Google Sheets.")
-
-# 連接 Google Sheets
+# ✅ 初始化 Google Sheets 連線（使用環境變數 GOOGLE_CREDENTIALS）
 try:
-    creds = Credentials.from_service_account_file("service_account.json", scopes=[
+    import json
+
+    service_account_info = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+    SPREADSHEET_ID = os.environ["GOOGLE_SHEET_ID"]
+
+    creds = Credentials.from_service_account_info(service_account_info, scopes=[
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive"
     ])
     client = gspread.authorize(creds)
-    SPREADSHEET_ID = "1hQeJuhzA7hE7norBIg3acR4eNtIIO4veg371V8lko3I"  # 請確認此 ID
     sheet = client.open_by_key(SPREADSHEET_ID).sheet1
-    logging.info("Connected to Google Sheets successfully.")
+    logging.info("✅ Connected to Google Sheets")
 except Exception as e:
-    logging.error(f"Failed to connect to Google Sheets: {e}")
+    logging.error(f"❌ Failed to connect to Google Sheets: {e}")
     raise HTTPException(status_code=500, detail=f"Failed to initialize Google Sheets: {e}")
 
+# ✅ 首頁 API
 @app.get("/")
 def read_root():
     return {"message": "Hello, FRC Scouting API is running!"}
@@ -109,16 +100,24 @@ def read_root():
 async def submit_get():
     return {"message": "Use POST method to submit scouting data."}
 
-# ✅ 加入驗證的 POST /submit/ API
+# ✅ 提交 API，含帳密驗證
 @app.post("/submit/")
 async def submit_data(data: ScoutingData, username: str = Depends(verify_user)):
-    logging.info(f"User '{username}' submitted data: {data}")
+    logging.info(f"📥 User '{username}' submitted data: {data}")
     try:
-        append_to_sheets(data)
+        row = [
+            data.match,
+            data.team_number, data.auto_L1, data.auto_L2, data.auto_L3, data.auto_L4,
+            data.teleop_L1, data.teleop_L2, data.teleop_L3, data.teleop_L4,
+            data.cage_level, data.processor, data.net, data.fouls,
+            data.major_fouls, data.notes
+        ]
+        sheet.append_row(row)
+        logging.info("✅ Data written to Google Sheets.")
         return {"message": "Data successfully written to Google Sheets!"}
     except ValidationError as ve:
         logging.error(f"Validation error: {ve.errors()}")
         raise HTTPException(status_code=422, detail=ve.errors())
     except Exception as e:
-        logging.error(f"Error writing to Google Sheets: {e}")
+        logging.error(f"❌ Error writing to Google Sheets: {e}")
         raise HTTPException(status_code=500, detail=str(e))
