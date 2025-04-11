@@ -72,23 +72,30 @@ function App() {
     e.preventDefault();
     setMessage("驗證中...");
     const credentials = btoa(`${username}:${password}`);
-
+  
     try {
       const res = await fetch(`${API_URL}/submit/`, {
-        headers: { Authorization: `Basic ${credentials}` }
+        method: "POST", // 用 POST 觸發驗證
+        headers: {
+          Authorization: `Basic ${credentials}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({}) // 傳空資料，後端格式正確會擋下
       });
-
-      if (res.ok) {
+  
+      const result = await res.json();
+  
+      if (res.ok && result.message?.includes("successfully")) {
         setIsLoggedIn(true);
         setMessage("");
       } else {
-        const result = await res.json();
-        setMessage(`❌ 登入失敗：${result.detail}`);
+        setMessage(`❌ 登入失敗：${result.detail || "請確認帳密"}`);
       }
     } catch (err) {
       setMessage("❌ 錯誤：" + err.message);
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
