@@ -239,6 +239,7 @@ function App() {
           </div>
 
           <button type="submit">Submit</button>
+          <h3>感謝所有幫忙scout的夥伴們/Thanks to all the friends who helped scout</h3>
         </form>
       )}
 
